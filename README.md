@@ -12,8 +12,6 @@ This setup customizes the accent color, UI elements, internal pages (like about:
    - Open it in your file explorer
    - Create a `chrome` folder if it doesn’t already exist
 
-   Example path (Windows): C:\Users\\<username>\AppData\Roaming\Mozilla\Firefox\Profiles<profile-id>.default-release\chrome
-
 2. **Download Repo Contents**
 
    Copy the contents of the `src/` folder and place them all inside the `chrome` folder of your Firefox profile.
