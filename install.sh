@@ -8,7 +8,7 @@ set -e
 
 # Check if we’re inside a Firefox profile folder
 if [[ ! -f "prefs.js" && ! -f "user.js" && ! -d "storage" ]]; then
-  echo "❌ This doesn’t look like a Firefox profile folder... Aborting"
+  echo "❌ This doesn't look like a Firefox profile folder... Aborting"
   exit 1
 fi
 
@@ -44,5 +44,7 @@ echo "✅ All files downloaded to chrome/"
 echo "⚙️ Set 'toolkit.legacyUserProfileCustomizations.stylesheets' to true in about:config"
 echo "👉 Then restart Firefox"
 
-echo ""
-read -p "Press Enter to continue..."
+if [ -t 0 ]; then
+  echo ""
+  read -p "Press Enter to continue..."
+fi
