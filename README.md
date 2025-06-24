@@ -9,15 +9,13 @@ Run the following command from your Firefox profile folder.
 
 ## Manual install
 
-1. **Find your Firefox profile folder**
+1. **Find your Firefox profile folder**  
    See instructions below
 
-2. **Download contents**
-
+2. **Download contents**  
    Copy the contents of the `src/` folder and place it inside the `chrome` folder of your Firefox profile.
 
-3. **Enable user stylesheets in Firefox**
-
+3. **Enable user stylesheets in Firefox**  
    Go to `about:config`, then:
    - Set `toolkit.legacyUserProfileCustomizations.stylesheets` to `true`
    - Restart Firefox (yes, you have to)
@@ -29,10 +27,8 @@ Run the following command from your Firefox profile folder.
    - Create a `chrome` folder if it doesn’t already exist
 
 ## Customizing colors
-1. **Customize your accent color**
-
+1. **Customize your accent color**  
    Open `custom.css` and change the values to your desired color codes.  
 
-2. **Restart firefox**
-
+2. **Restart firefox**  
    After changes, restart Firefox to apply the styles.
