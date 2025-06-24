@@ -12,9 +12,9 @@ This setup customizes the accent color, UI elements, internal pages (like about:
    - Open it in your file explorer
    - Create a `chrome` folder if it doesn’t already exist
 
-2. **Download Repo Contents**
+2. **Download contents**
 
-   Copy the contents of the `src/` folder and place them all inside the `chrome` folder of your Firefox profile.
+   Copy the contents of the `src/` folder and place it inside the `chrome` folder of your Firefox profile.
 
 3. **Enable user stylesheets in Firefox**
 
