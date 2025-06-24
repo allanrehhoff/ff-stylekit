@@ -1,7 +1,16 @@
 :root {
+	/**
+	 * Primary accent color for firefox.
+	 * This color is used for the Firefox UI elements.
+	 * Such as the address bar, tabs, and buttons.
+	 */
 	--custom-primary-color: rgb(248, 157, 0);
 
-	/* Selection  */
+	/**
+	* Default colors applied when selecting text.
+	* These colors are used for text selection in the browser.
+	* They can be overridden by the website's CSS.
+	*/
 	--custom-selection-text-color: rgb(255, 255, 255);
 	--custom-selection-background-color: rgba(248, 157, 0, 0.5);
 }
