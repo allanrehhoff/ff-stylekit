@@ -1,0 +1,7 @@
+:root {
+	--custom-primary-color: rgb(248, 157, 0);
+
+	/* Selection  */
+	--custom-selection-text-color: rgb(255, 255, 255);
+	--custom-selection-background-color: rgba(248, 157, 0, 0.5);
+}

@@ -1,0 +1,29 @@
+@import "custom.css";
+
+:root {
+  --color-accent-primary: var(--custom-primary-color) !important;
+
+  --link-color: var(--color-accent-primary) !important;
+  --link-color-hover: var(--color-accent-primary) !important;
+  --color-accent-primary-active: var(--color-accent-primary) !important;
+
+  --in-content-link-color: var(--color-accent-primary) !important;
+  --in-content-link-color-hover: var(--color-accent-primary) !important;
+
+  --in-content-primary-button-background: var(--color-accent-primary) !important;
+  --in-content-primary-button-text-color: #ffffff !important;
+
+  --in-content-focus-outline-color: var(--color-accent-primary) !important;
+
+  --checkbox-checked-bgcolor: var(--color-accent-primary) !important;
+  --checkbox-checked-border-color: var(--color-accent-primary) !important;
+  --checkbox-unchecked-border-color: #888888 !important;
+
+  --radio-checked-bgcolor: var(--color-accent-primary) !important;
+  --radio-checked-border-color: var(--color-accent-primary) !important;
+}
+
+::selection {
+  color: var(--custom-selection-text-color);
+  background: var(--custom-selection-background-color); /* Or whatever background makes the accent pop */
+}

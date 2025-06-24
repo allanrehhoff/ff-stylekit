@@ -1,0 +1,150 @@
+/** General variables ***/
+@import "custom.css";
+
+:root {
+    --color-accent-primary: var(--custom-primary-color) !important;
+    --active-accent-color: var(--color-accent-primary) !important;
+
+
+    --tab-toolbar-navbar-overlap: 0px !important; /* fix for full screen mode */
+    --tab-min-height: 33px !important;
+    --tabstrip-min-height: var(--tab-min-height) !important;
+    --tab-selected-bgcolor: var(--toolbar-bgcolor) !important;
+    --toolbar-field-focus-border-color: var(--active-accent-color)!important;
+    --focus-outline: 1px solid var(--active-accent-color) !important;
+
+    --tab-selected-shadow: none!important;
+    --tab-selected-outline-color: transparent!important;
+}
+
+:root #tabbrowser-tabs[orient="horizontal"] {
+    --tab-min-height: 33px !important;
+}
+
+:root #tabbrowser-tabs[orient="vertical"] {
+    --tab-min-height: 38px !important;
+    --tab-collapsed-background-width: 100% !important;
+    --border-radius-medium: 0px !important;
+    --tab-inline-padding: 15px !important;
+}
+
+/** Vertical Tabs Tweaks ***/
+#tabbrowser-arrowscrollbox[orient="vertical"] > #tabbrowser-arrowscrollbox-periphery > #tabs-newtab-button {
+    margin: 0px!important;
+}
+
+#tabbrowser-arrowscrollbox[orient="vertical"] > #tabbrowser-arrowscrollbox-periphery > #tabs-newtab-button, #vertical-tabs-newtab-button {
+    margin-inline: 0px!important;
+    padding: 0 var(--tab-inline-padding)!important;
+}
+
+.tools-and-extensions[orientation="vertical"] {
+    display: none!important;
+}
+
+#navigator-toolbox[tabs-hidden] #vertical-spacer[removable="false"] {
+    display: none!important;
+}
+
+#tabbrowser-tabs[orient="vertical"] .tabbrowser-tab {
+    padding: 0px!important;
+}
+
+#tabbrowser-tabs[orient="vertical"] .tab-background:not([selected=true]):not([multiselected=true]) {
+    border-radius: 0px !important;
+}
+
+#tabbrowser-tabs[orient="vertical"] .tab-background {
+    --tab-inner-inline-margin: 0px;
+    --tab-block-margin: 0px;
+}
+#tabbrowser-tabs[orient="vertical"] .tabbrowser-tab[selected=true] {
+    position: relative;
+}
+#tabbrowser-tabs[orient="vertical"] .tabbrowser-tab[selected=true]::before {
+    content: " ";
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    width: 1px;
+    background: var(--active-accent-color);
+    z-index: 10050;
+}
+
+/** Horizontal tab tweaks ***/
+#tabbrowser-tabs[orient="horizontal"] .tab-background {
+    border-radius: var(--user-tab-rounding) var(--user-tab-rounding) 0px 0px !important;
+    margin-block: 1px 0 !important;
+}
+
+/* Inactive tabs: Separator line style */
+#tabbrowser-tabs[orient="horizontal"] .tabbrowser-tab:first-of-type .tab-background:not([selected=true]) {
+    /* border-left: 1px solid #3A3944!important; */
+    margin-left: 1px!important;
+}
+
+#tabbrowser-tabs[orient="horizontal"] .tabbrowser-tab {
+    position: relative;
+}
+
+#tabbrowser-tabs[orient="horizontal"] .tabbrowser-tab[selected=true]::before {
+    content: " ";
+    position: absolute;
+    top: 0px;
+    left: -1px;
+    height: 1px;
+    width: calc(100% + 1px);
+    background: var(--active-accent-color);
+}
+
+#tabbrowser-tabs[orient="horizontal"] .tab-background:not([selected=true]):not([multiselected=true]):not([beforeselected-visible="true"]) {
+    /* border-right: 1px solid rgba(0, 0, 0, .20) !important; */
+}
+
+/* For dark backgrounds */
+#tabbrowser-tabs[orient="horizontal"] [brighttext="true"] .tab-background:not([selected=true]):not([multiselected=true]):not([beforeselected-visible="true"]) {
+    /* border-right: 1px solid var(--lwt-selected-tab-background-color, rgba(255, 255, 255, .20)) !important; */
+}
+
+#tabbrowser-tabs[orient="horizontal"] .tab-background:not([selected=true]):not([multiselected=true]) {
+    border-radius: 0 !important;
+}
+
+/* Remove padding between tabs */
+#tabbrowser-tabs[orient="horizontal"] .tabbrowser-tab {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+#tabbrowser-tabs[orient="horizontal"] .titlebar-spacer[type="pre-tabs"] {
+    width: 15px!important;
+}
+
+#tabbrowser-tabs[orient="horizontal"] .titlebar-spacer[type="post-tabs"] {
+    width: 0px!important;
+}
+
+#tabbrowser-tabs[orient="horizontal"][haspinnedtabs]:not([positionpinnedtabs]) > #tabbrowser-arrowscrollbox > .tabbrowser-tab[first-visible-unpinned-tab] {
+    margin-inline-start: 0px!important;
+}
+
+
+/** Misc fixes **/
+.dialogBox {
+    border-radius: 0px!important;
+}
+
+#loginContainer {
+    margin-bottom: 0px!important;
+}
+
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"); /* only needed once */
+
+#tabbrowser-tabs {
+    --user-tab-rounding: 0px;
+}
+
+/* TABS: height */
+#tabbrowser-tabs[orient="horizontal"] #TabsToolbar {height: var(--tab-min-height) !important;}
+
