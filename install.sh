@@ -39,7 +39,9 @@ warn() {
 }
 
 await() {
-	read -p "Press Enter to continue..."
+	if [ -t 0 ]; then
+		read -p "Press Enter to continue..."
+	fi
 }
 
 panic() {
@@ -141,8 +143,6 @@ write
 write "Files downloaded successfully."
 write "Set 'toolkit.legacyUserProfileCustomizations.stylesheets' to true in about:config"
 write "Then restart Firefox"
+write
 
-if [ -t 0 ]; then
-	write
-	await
-fi
+await
