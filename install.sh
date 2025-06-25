@@ -86,6 +86,8 @@ if [[ ! -d "$PROFILE_BASE" ]]; then
 fi
 
 # Get all folders (not files) in profile base
+shopt -s nullglob # Enable nullglob to handle no matches gracefully.
+				  # e.g. empty list instead of literal '*'
 PROFILES=()
 for dir in "$PROFILE_BASE"/*/; do
 	[[ -d "$dir" ]] && PROFILES+=("$dir")
