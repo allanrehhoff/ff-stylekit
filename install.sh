@@ -54,7 +54,7 @@ error() {
 	panic
 }
 
-set -e
+set -x # Enable debug mode
 
 # Files to download from the GitHub repo
 BASE_URL="https://raw.githubusercontent.com/allanrehhoff/ff-stylekit/refs/heads/master/src"
