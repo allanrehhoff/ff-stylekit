@@ -12,5 +12,5 @@
 	* They can be overridden by the website's CSS.
 	*/
 	--custom-selection-text-color: rgb(255, 255, 255);
-	--custom-selection-background-color: rgba(var(--custom-primary-color), 0.5);
+	--custom-selection-background-color: rgba(248, 157, 0, 0.5);
 }
