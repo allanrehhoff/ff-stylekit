@@ -1,6 +1,6 @@
 # Firefox Custom UI Styling
 
-A custom style kit for Firefox and internal pages and elements using `userChrome.css` and `userContent.css`.
+A custom style kit for Firefox's internal pages and elements using `userChrome.css` and `userContent.css`.
 This stylekit customizes the generel appearance of Firefox.
 
 Elements include (but not limited to):
