@@ -51,7 +51,7 @@ get_profiles() {
 			# Because WSL can be run from a Windows terminal, we need to check if we are in WSL
 			# If we are in WSL, we can use the Windows AppData path to find the Firefox profiles.
 			# If we are in a Windows terminal, we cannot use /dev/tty or /dev/stdin
-			is_wsl || error "This script must be run from WSL, windows terminals are not supported."
+			is_wsl || error "This script must be run from WSL, windows terminals are not supported"
 
 			WIN_APPDATA=$(cmd.exe /C "echo %APPDATA%" 2>/dev/null | tr -d '\r')
 			PROFILES_DIR="$(wslpath "$WIN_APPDATA")/Mozilla/Firefox/Profiles"
@@ -65,13 +65,13 @@ get_profiles() {
 	fi
 
 	if [[ ! -d "$PROFILES_DIR" ]]; then
-		error "Could not find Firefox profiles directory."
+		error "Could not find Firefox profiles directory"
 	fi
 }
 
 # Lets user pick the profile
 set_profiles() {
-	cd "$PROFILES_DIR" || error "Failed to enter profiles directory."
+	cd "$PROFILES_DIR" || error "Failed to enter profiles directory"
 	mapfile -t profiles < <(find . -maxdepth 1 -mindepth 1 -type d | sed 's|^\./||')
 
 	if [[ ${#profiles[@]} -eq 0 ]]; then
@@ -107,7 +107,7 @@ verify() {
 	BASE_URL="https://raw.githubusercontent.com/allanrehhoff/ff-stylekit/refs/heads/master/src"
 	files=(userChrome.css userContent.css custom.css)
 
-	write "Verifying remote files exist..."
+	write "Verifying remote files exist"
 	for file in "${files[@]}"; do
 		if ! curl --head --silent --fail "$BASE_URL/$file" > /dev/null; then
 			error "File $file does not exist at the remote URL."
@@ -118,11 +118,11 @@ verify() {
 # Download and install
 install() {
 	TARGET="$PROFILES_DIR/$SELECTED_PROFILE/chrome"
-	mkdir -p "$TARGET" || error "Failed to create chrome/ directory."
+	mkdir -p "$TARGET" || error "Failed to create chrome/ directory"
 
-	rm -f "$TARGET"/*.css || error "Failed to clean chrome/ directory."
+	rm -f "$TARGET"/*.css || error "Failed to clean chrome/ directory"
 
-	write "Downloading files from repository..."
+	write "Downloading files from repository"
 
 	for file in "${files[@]}"; do
 		curl -fsSL "$BASE_URL/$file" -o "$TARGET/$file" || error "Failed to download $file."
@@ -137,7 +137,7 @@ main() {
 	install
 
 	write ""
-	write "All done! files was downloaded to: $PROFILES_DIR/$SELECTED_PROFILE/chrome"
+	write "Files was downloaded to: $PROFILES_DIR/$SELECTED_PROFILE/chrome"
 	write "Set 'toolkit.legacyUserProfileCustomizations.stylesheets' to true in about:config"
 }
 
