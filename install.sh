@@ -54,6 +54,8 @@ error() {
 	panic
 }
 
+set -e
+
 # Files to download from the GitHub repo
 BASE_URL="https://raw.githubusercontent.com/allanrehhoff/ff-stylekit/refs/heads/master/src"
 FILES=(userChrome.css userContent.css custom.css)
