@@ -17,7 +17,7 @@ Hides some duplicate buttons and annoying features when using vertical tabs.
 
 ## Automatic install
 > [!NOTE]  
-> ***Windows support**  
+> **Windows support**  
 > Windows support is limited, you must run this script from Windows Subsystem for Linux (WSL)
 
 > [!IMPORTANT]  
