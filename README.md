@@ -6,7 +6,7 @@ This setup customizes the accent color, UI elements, internal pages (like about:
 ## Automatic install
 > [!IMPORTANT]  
 > **Configuration flag required**  
-> You must manually set `toolkit.legacyUserProfileCustomizations.stylesheets` to true in `about:config`
+> You must manually set `toolkit.legacyUserProfileCustomizations.stylesheets` to true in `about:config`  
 > Restart firefox after enabling this option.
 
 The following command will attempt to automatically detect your Firefox profiles directory.  
