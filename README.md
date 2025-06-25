@@ -3,18 +3,19 @@
 A custom theme for Firefox's UI and internal pages using `userChrome.css` and `userContent.css`.
 This setup customizes the accent color, UI elements, internal pages (like about:preferences).
 
+## Automatic install
 > [!IMPORTANT]  
 > **Configuration flag required**
 > You must manually set `toolkit.legacyUserProfileCustomizations.stylesheets` to true in `about:config`
 > Restart firefox after enabling this option.
 
-## Automatic install
 The following command will attempt to automatically detect your Firefox profiles directory.  
 If it fails, proceed to manual installation below.  
 
-`curl -sL https://raw.githubusercontent.com/allanrehhoff/ff-stylekit/refs/heads/master/install.sh | bash`
+`curl -sL https://raw.githubusercontent.com/allanrehhoff/ff-stylekit/master/install.sh | bash`
 
 ## Manual install
+
 1. **Find your Firefox profile folder**  
    - Open `about:profiles` in Firefox
    - Look for the **Root Directory** of your active profile
@@ -23,7 +24,12 @@ If it fails, proceed to manual installation below.
 
 2. **Download contents**  
    - Clone contents of this repository to you machine
-   - Copy the contents of the `src/` folder and place it inside the `chrome` folder of your Firefox profile.x
+   - Copy the contents of the `src/` folder and place it inside the `chrome` folder of your Firefox profile.
+
+3. **Enable user stylesheets in Firefox**  
+   - Go to `about:config`, then:
+   - Set  to `true`
+   - Restart Firefox
 
 ## Customizing colors
 1. **Customize your accent color**  
