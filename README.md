@@ -1,7 +1,19 @@
 # Firefox Custom UI Styling
 
-A custom theme for Firefox's UI and internal pages using `userChrome.css` and `userContent.css`.
-This setup customizes the accent color, UI elements, internal pages (like about:preferences).
+A custom style kit for Firefox and internal pages and elements using `userChrome.css` and `userContent.css`.
+This stylekit customizes the generel appearance of Firefox.
+
+Elements include (but not limited to):
+- Highlight colors
+- Sizes
+- Tabs
+- Urlbar
+- Inputs
+- Prompts (alert, confirm etc.)
+- about:preferences
+- about:config
+
+Hides some duplicate buttons and annoying features when using vertical tabs.
 
 ## Automatic install
 > [!NOTE]  
