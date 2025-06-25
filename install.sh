@@ -95,7 +95,7 @@ set_profiles() {
 			fi
 		done < /dev/tty
 		if [[ -z "$SELECTED_PROFILE" ]]; then
-			error "No profile selected."
+			error "No profile selected"
 		fi
 		clear
 		write "Using profile: $SELECTED_PROFILE"
@@ -107,10 +107,10 @@ verify() {
 	BASE_URL="https://raw.githubusercontent.com/allanrehhoff/ff-stylekit/refs/heads/master/src"
 	files=(userChrome.css userContent.css custom.css)
 
-	write "Verifying remote files exist"
+	write "Verifying remote files exists"
 	for file in "${files[@]}"; do
 		if ! curl --head --silent --fail "$BASE_URL/$file" > /dev/null; then
-			error "File $file does not exist at the remote URL."
+			error "File $file does not exist at the remote URL"
 		fi
 	done
 }
@@ -137,7 +137,7 @@ main() {
 	install
 
 	write ""
-	write "Files was downloaded to: $PROFILES_DIR/$SELECTED_PROFILE/chrome"
+	write "Files downloaded to: $PROFILES_DIR/$SELECTED_PROFILE/chrome"
 	write "Set 'toolkit.legacyUserProfileCustomizations.stylesheets' to true in about:config"
 }
 
