@@ -1,31 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Function to detect the platform
-# Returns: linux, macos, windows, wsl, or unknown
-detect_platform() {
-	local uname_out
-	uname_out="$(uname -s)"
-
-	case "${uname_out}" in
-		Linux*)
-			if grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null; then
-				echo "wsl"
-			else
-				echo "linux"
-			fi
-			;;
-		Darwin*)
-			echo "macos"
-			;;
-		MINGW*|MSYS*|CYGWIN*)
-			echo "windows"
-			;;
-		*)
-			echo $uname_out
-			;;
-	esac
-}
-
+# Print functions
 write() {
 	if [[ -n "$1" ]]; then
 		echo "👉 $1"
@@ -54,97 +29,118 @@ error() {
 	panic
 }
 
-# Files to download from the GitHub repo
-BASE_URL="https://raw.githubusercontent.com/allanrehhoff/ff-stylekit/refs/heads/master/src"
-FILES=(userChrome.css userContent.css custom.css)
-PLATFORM=$(detect_platform)
+# Check if running in WSL
+# This function checks if the parent process is a Windows terminal or WSL.
+# Required because windows terminals like PowerShell can hand over control to WSL,
+# when piping to bash, preventing the script from reading /dev/stdin and /dev/tty.
+is_wsl() {
+	ppid=$(ps -o ppid= -p $$ | tr -d ' ')
+	parent_proc=$(ps -o comm= -p "$ppid" | tr '[:upper:]' '[:lower:]')
 
-# Detect profile base path
-case "$PLATFORM" in
-	linux)
-		PROFILE_BASE="$HOME/.mozilla/firefox/Profiles"
-		;;
-	macos)
-		PROFILE_BASE="$HOME/Library/Application Support/Firefox/Profiles"
-		;;
-	windows)
-		WIN_APPDATA=$(cmd.exe /C "echo %APPDATA%" 2>/dev/null | tr -d '\r')
-		PROFILE_BASE="$(echo "$WIN_APPDATA" | sed 's#\\#/#g')/Mozilla/Firefox/Profiles"
-		;;
-	wsl)
-		WIN_APPDATA=$(cmd.exe /C "echo %APPDATA%" 2>/dev/null | tr -d '\r')
-		PROFILE_BASE="$(wslpath "$WIN_APPDATA")/Mozilla/Firefox/Profiles"
-		;;
-	*)
-		error "Unsupported platform: $PLATFORM"
-		;;
-esac
+	if [[ "$parent_proc" =~ ^(powershell|cmd|bash|zsh|fish|curl|wget)$ ]]; then
+		return 0
+	else
+		return 1
+	fi
+}
 
-# Check base exists
-if [[ ! -d "$PROFILE_BASE" ]]; then
-	error "Profile directory not found: $PROFILE_BASE"
-fi
+# Check platform and set profiles directory
+get_profiles() {
+	if [[ "$(uname -s)" == "Linux" ]]; then
+		if grep -qiE 'microsoft|wsl' /proc/version; then
+			# Because WSL can be run from a Windows terminal, we need to check if we are in WSL
+			# If we are in WSL, we can use the Windows AppData path to find the Firefox profiles.
+			# If we are in a Windows terminal, we cannot use /dev/tty or /dev/stdin
+			is_wsl || error "This script must be run from WSL, windows terminals are not supported."
 
-# Get all folders (not files) in profile base
-shopt -s nullglob # Enable nullglob to handle no matches gracefully.
-				  # e.g. empty list instead of literal '*'
-PROFILES=()
-for dir in "$PROFILE_BASE"/*/; do
-	[[ -d "$dir" ]] && PROFILES+=("$dir")
-done
-
-# Check if any profiles were found
-if [[ ${#PROFILES[@]} -eq 0 ]]; then
-	error "No profiles found in: $PROFILE_BASE"
-fi
-
-# If only one profile, use it
-if [[ ${#PROFILES[@]} -eq 1 ]]; then
-	PROFILE_DIR="${PROFILES[0]}"
-	write "Using profile directory: $PROFILE_DIR"
-else
-	write "Multiple profiles found, select one"
-	select PROFILE_DIR in "${PROFILES[@]}"; do
-		if [[ -n "$PROFILE_DIR" ]]; then
-			break
+			WIN_APPDATA=$(cmd.exe /C "echo %APPDATA%" 2>/dev/null | tr -d '\r')
+			PROFILES_DIR="$(wslpath "$WIN_APPDATA")/Mozilla/Firefox/Profiles"
 		else
-			warn "Invalid choice. Try again."
+			PROFILES_DIR="$HOME/.mozilla/firefox/Profiles"
+		fi
+	elif [[ "$(uname -s)" == "Darwin" ]]; then
+		PROFILES_DIR="$HOME/Library/Application Support/Firefox/Profiles"
+	else
+		error "Unsupported operating system: $(uname -s)"
+	fi
+
+	if [[ ! -d "$PROFILES_DIR" ]]; then
+		error "Could not find Firefox profiles directory."
+	fi
+}
+
+# Lets user pick the profile
+set_profiles() {
+	cd "$PROFILES_DIR" || error "Failed to enter profiles directory."
+	mapfile -t profiles < <(find . -maxdepth 1 -mindepth 1 -type d | sed 's|^\./||')
+
+	if [[ ${#profiles[@]} -eq 0 ]]; then
+		error "No Firefox profiles found."
+	elif [[ ${#profiles[@]} -eq 1 ]]; then
+		SELECTED_PROFILE="${profiles[0]}"
+		write "Found profile: $SELECTED_PROFILE"
+	else
+		# Maybe use a different input to select profile?
+		# WSL is wierd with /dev/tty
+		# if [ -r /dev/tty ] && [ -w /dev/tty ]; then
+		# 	input_source="/dev/tty"
+		# else
+		# 	input_source="/dev/stdin"
+		# fi
+		write "Select install profile:"
+		PS3='Enter number: '
+		select SELECTED_PROFILE in "${profiles[@]}"; do
+			if [[ -n "${SELECTED_PROFILE}" ]]; then
+				break
+			fi
+		done < /dev/tty
+		if [[ -z "$SELECTED_PROFILE" ]]; then
+			error "No profile selected."
+		fi
+		clear
+		write "Using profile: $SELECTED_PROFILE"
+	fi
+}
+
+# Check remote files exist
+verify() {
+	BASE_URL="https://raw.githubusercontent.com/allanrehhoff/ff-stylekit/refs/heads/master/src"
+	files=(userChrome.css userContent.css custom.css)
+
+	write "Verifying remote files exist..."
+	for file in "${files[@]}"; do
+		if ! curl --head --silent --fail "$BASE_URL/$file" > /dev/null; then
+			error "File $file does not exist at the remote URL."
 		fi
 	done
-	clear
-	write "Using profile directory: $PROFILE_DIR"
-fi
+}
 
-cd "$PROFILE_DIR"
+# Download and install
+install() {
+	TARGET="$PROFILES_DIR/$SELECTED_PROFILE/chrome"
+	mkdir -p "$TARGET" || error "Failed to create chrome/ directory."
 
-# Create chrome directory if it doesn't exist
-mkdir -p chrome
+	rm -f "$TARGET"/*.css || error "Failed to clean chrome/ directory."
 
-# Clean previous files just in case
-for file in "${FILES[@]}"; do
-	if [[ -f "chrome/$file" ]]; then
-		rm "chrome/$file"
-	fi
-done
+	write "Downloading files from repository..."
 
-write "Verifying remote files exist."
-for file in "${FILES[@]}"; do
-	HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -I "$BASE_URL/$file")
-	if [[ "$HTTP_STATUS" != "200" ]]; then
-		error "File was inaccessible: $file (HTTP $HTTP_STATUS)... Aborting"
-	fi
-done
+	for file in "${files[@]}"; do
+		curl -fsSL "$BASE_URL/$file" -o "$TARGET/$file" || error "Failed to download $file."
+	done
+}
 
-# Grab the files from repository and dump them into chrome/'
-write "Downloading files from repository."
-for file in "${FILES[@]}"; do
-	curl -fsSL "$BASE_URL/$file" -o "chrome/$file"
-done
+# Main logic
+main() {
+	get_profiles
+	set_profiles
+	verify
+	install
 
-write
-write "Files downloaded successfully."
-write "Set 'toolkit.legacyUserProfileCustomizations.stylesheets' to true in about:config"
-write "Then restart Firefox"
-write
+	write ""
+	write "All done! files was downloaded to: $PROFILES_DIR/$SELECTED_PROFILE/chrome"
+	write "Set 'toolkit.legacyUserProfileCustomizations.stylesheets' to true in about:config"
+}
 
+main
 await
+exit 0

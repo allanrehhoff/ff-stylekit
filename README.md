@@ -4,6 +4,10 @@ A custom theme for Firefox's UI and internal pages using `userChrome.css` and `u
 This setup customizes the accent color, UI elements, internal pages (like about:preferences).
 
 ## Automatic install
+> [!NOTE]  
+> ***Windows support**  
+> Windows support is limited, you must run this script from Windows Subsystem for Linux (WSL)
+
 > [!IMPORTANT]  
 > **Configuration flag required**  
 > You must manually set `toolkit.legacyUserProfileCustomizations.stylesheets` to true in `about:config`  
