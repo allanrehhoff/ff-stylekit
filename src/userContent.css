@@ -25,5 +25,5 @@
 
 ::selection {
   color: var(--custom-selection-text-color);
-  background: var(--custom-selection-background-color); /* Or whatever background makes the accent pop */
+  background: var(--custom-selection-background-color);
 }
