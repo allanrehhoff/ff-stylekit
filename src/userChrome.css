@@ -67,7 +67,7 @@
     top: 0px;
     bottom: 0px;
     left: 0px;
-    width: 1px;
+    width: 0.124rem;
     background: var(--active-accent-color);
     z-index: 10050;
 }
