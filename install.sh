@@ -72,7 +72,11 @@ get_profiles() {
 # Lets user pick the profile
 set_profiles() {
 	cd "$PROFILES_DIR" || error "Failed to enter profiles directory"
-	mapfile -t profiles < <(find . -maxdepth 1 -mindepth 1 -type d | sed 's|^\./||')
+
+	profiles=()
+	while IFS= read -r dir; do
+		profiles+=("$dir")
+	done < <(find . -maxdepth 1 -mindepth 1 -type d -exec basename {} \;)
 
 	if [[ ${#profiles[@]} -eq 0 ]]; then
 		error "No Firefox profiles found."
@@ -88,15 +92,18 @@ set_profiles() {
 		# 	input_source="/dev/stdin"
 		# fi
 		write "Select install profile:"
+
 		PS3='Enter number: '
 		select SELECTED_PROFILE in "${profiles[@]}"; do
 			if [[ -n "${SELECTED_PROFILE}" ]]; then
 				break
 			fi
 		done < /dev/tty
+
 		if [[ -z "$SELECTED_PROFILE" ]]; then
 			error "No profile selected"
 		fi
+
 		clear
 		write "Using profile: $SELECTED_PROFILE"
 	fi
@@ -137,10 +144,11 @@ main() {
 	install
 
 	write ""
-	write "Files downloaded to: $PROFILES_DIR/$SELECTED_PROFILE/chrome"
+	write "Installed in: $PROFILES_DIR/$SELECTED_PROFILE/chrome"
 	write "Set 'toolkit.legacyUserProfileCustomizations.stylesheets' to true in about:config"
+
+	await
+	exit 0
 }
 
 main
-await
-exit 0
