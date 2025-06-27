@@ -28,7 +28,8 @@ Hides some duplicate buttons and annoying features when using vertical tabs.
 The following command will attempt to automatically detect your Firefox profiles directory.  
 If it fails, proceed to manual installation below.  
 
-**Command:** `curl -sL https://raw.githubusercontent.com/allanrehhoff/ff-stylekit/master/install.sh | bash`
+**Command:**  
+`curl -sL https://raw.githubusercontent.com/allanrehhoff/ff-stylekit/refs/heads/master/install.sh | bash`
 
 ## Manual install
 
