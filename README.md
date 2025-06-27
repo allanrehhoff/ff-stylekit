@@ -13,6 +13,7 @@ Elements include (but not limited to):
 - about:preferences
 - about:config
 
+Heavily inspired by Firefox proton design.  
 Hides some duplicate buttons and annoying features when using vertical tabs.
 
 ## Automatic install
